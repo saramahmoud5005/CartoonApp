@@ -1,12 +1,15 @@
 package com.example.cartoonapp
 
 import android.widget.ImageView
+import androidx.activity.viewModels
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
@@ -23,6 +26,9 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
+import coil.compose.AsyncImage
+import coil.compose.rememberAsyncImagePainter
 import com.example.cartoonapp.model.CharacterResponse
 import com.example.cartoonapp.model.Info
 import com.example.cartoonapp.model.Location
@@ -31,7 +37,10 @@ import com.example.cartoonapp.model.Result
 import com.example.cartoonapp.ui.theme.CartoonAppTheme
 
 @Composable
-fun HomeScreen(results: List<Result>){
+fun HomeScreen(){
+    val viewModel  : HomeViewModel = viewModel()
+
+    val results : List<Result> = viewModel.results.value
 //    var chars : List<Result>  = listOf(
 //        Result(
 //            " ",
@@ -71,73 +80,88 @@ fun HomeScreen(results: List<Result>){
 fun CharacterItem(result: Result){
     Card(
         modifier = Modifier
-            .padding(8.dp)
-            .fillMaxWidth(),
+            .padding(10.dp)
+            .fillMaxSize(),
+
         onClick = {}
     ) {
         Row(
-            modifier = Modifier
-                .fillMaxSize(),
+            modifier = Modifier.fillMaxSize(),
             verticalAlignment = Alignment.CenterVertically
         ){
-            val imageView : ImageView? =null
-            Image(
-                imageVector = Icons.Filled.Face,
-                contentDescription = "character's image",
-                modifier = Modifier.weight(0.30f)
-            )
-            Column (
+//            val imageView : ImageView? =null
+//            Image(
+//                painter = rememberAsyncImagePainter(result.image),
+//                contentDescription = "character's image",
+//                modifier = Modifier.weight(0.30f)
+//            )
+            Box(
                 modifier = Modifier
-                    .weight(0.70f)
-
+                    .weight(0.40f)
+                    .fillMaxSize()
+            ) {
+                AsyncImage(
+                    model = result.image,
+                    contentDescription = null,
+                    modifier = Modifier.fillMaxSize()
+                )
+            }
+            Box (
+                modifier = Modifier.weight(0.60f).fillMaxSize()
             ){
-                Text(text = result.name,
-                    modifier = Modifier.fillMaxWidth().padding(top = 10.dp))
-                Row (
-                    modifier = Modifier.fillMaxWidth().padding(bottom = 10.dp),
-                    verticalAlignment = Alignment.CenterVertically
+                Column (
+                    modifier = Modifier
+                        .padding(top = 10.dp, bottom = 8.dp)
+
                 ){
-                    Icon(
-                        imageVector = Icons.Filled.Face,
-                        contentDescription = "character's status",
-                        modifier = Modifier.padding(end = 8.dp)
+                    Text(text = result.name,
+                        modifier = Modifier.fillMaxWidth())
+                    Row (
+                        modifier = Modifier.fillMaxWidth().padding(bottom = 10.dp),
+                        verticalAlignment = Alignment.CenterVertically
+                    ){
+                        Icon(
+                            imageVector = Icons.Filled.Face,
+                            contentDescription = "character's status",
+                            modifier = Modifier.padding(end = 8.dp)
+                        )
+                        Text(text = "${result.status} - ",
+                            style = TextStyle(
+                                fontSize = 11.sp
+                            ))
+                        Text(text = result.species,
+                            style = TextStyle(
+                                fontSize = 11.sp
+                            ))
+                    }
+                    Text(text = "Last Known Location",
+                        modifier = Modifier.fillMaxWidth(),
+                        color = Color.Gray,
+                        style = TextStyle(
+                            fontSize = 10.sp
+                        )
                     )
-                    Text(text = "${result.status} - ",
+                    Text(text = result.location.name,
+                        modifier = Modifier.fillMaxWidth().padding(bottom = 10.dp),
                         style = TextStyle(
-                            fontSize = 11.sp
+                            fontSize = 13.sp
                         ))
-                    Text(text = result.species,
+
+                    Text(text = "Last seen in:",
+                        modifier = Modifier.fillMaxWidth(),
+                        color = Color.Gray,
                         style = TextStyle(
-                            fontSize = 11.sp
+                            fontSize = 10.sp
+                        )
+                    )
+                    Text(text = "Pet Shop Employee",
+                        modifier = Modifier.fillMaxWidth(),
+                        style = TextStyle(
+                            fontSize = 13.sp
                         ))
                 }
-                Text(text = "Last Known Location",
-                    modifier = Modifier.fillMaxWidth(),
-                    color = Color.Gray,
-                    style = TextStyle(
-                        fontSize = 10.sp
-                    )
-                )
-                Text(text = result.location.name,
-                    modifier = Modifier.fillMaxWidth().padding(bottom = 10.dp),
-                    style = TextStyle(
-                        fontSize = 13.sp
-                    ))
-
-                Text(text = "Last seen in:",
-                    modifier = Modifier.fillMaxWidth(),
-                    color = Color.Gray,
-                    style = TextStyle(
-                        fontSize = 10.sp
-                    )
-                )
-                Text(text = "Pet Shop Employee",
-                    modifier = Modifier.fillMaxWidth().padding(bottom = 10.dp),
-                    style = TextStyle(
-                        fontSize = 13.sp
-                    ))
             }
-        }
+            }
     }
 }
 
