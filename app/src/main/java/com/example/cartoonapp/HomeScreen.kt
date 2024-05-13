@@ -1,11 +1,12 @@
 package com.example.cartoonapp
 
-import android.widget.ImageView
-import androidx.activity.viewModels
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -14,6 +15,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Face
+import androidx.compose.material.icons.filled.Info
 import androidx.compose.material3.Card
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -28,9 +30,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import coil.compose.AsyncImage
-import coil.compose.rememberAsyncImagePainter
-import com.example.cartoonapp.model.CharacterResponse
-import com.example.cartoonapp.model.Info
 import com.example.cartoonapp.model.Location
 import com.example.cartoonapp.model.Origin
 import com.example.cartoonapp.model.Result
@@ -41,14 +40,14 @@ fun HomeScreen(){
     val viewModel  : HomeViewModel = viewModel()
 
     val results : List<Result> = viewModel.results.value
-//    var chars : List<Result>  = listOf(
+//    var results : List<Result>  = listOf(
 //        Result(
 //            " ",
 //            listOf(""),
 //            "",
 //            1,
 //            "",
-//            Location("", ""),
+//            Location(name = "", url = ""),
 //            "",
 //            Origin("", ""),
 //            "",
@@ -81,13 +80,13 @@ fun CharacterItem(result: Result){
     Card(
         modifier = Modifier
             .padding(10.dp)
-            .fillMaxSize(),
+            .fillMaxSize().size(160.dp),
 
         onClick = {}
     ) {
         Row(
-            modifier = Modifier.fillMaxSize(),
-            verticalAlignment = Alignment.CenterVertically
+//            modifier = Modifier.fillMaxSize(),
+//            verticalAlignment = Alignment.CenterVertically
         ){
 //            val imageView : ImageView? =null
 //            Image(
@@ -99,27 +98,38 @@ fun CharacterItem(result: Result){
                 modifier = Modifier
                     .weight(0.40f)
                     .fillMaxSize()
+
             ) {
                 AsyncImage(
                     model = result.image,
                     contentDescription = null,
                     modifier = Modifier.fillMaxSize()
                 )
+//                Image(
+//                imageVector = Icons.Filled.Info,
+//                contentDescription = "character's image",
+//                modifier = Modifier.fillMaxSize().size(150.dp)
+//                )
             }
+//            Spacer(modifier = Modifier.padding(5.dp).align(Alignment.CenterVertically).fillMaxHeight())
             Box (
-                modifier = Modifier.weight(0.60f).fillMaxSize()
+                modifier = Modifier
+                    .weight(0.60f)
+                    .fillMaxSize(),
+//                contentAlignment = Alignment.Center
             ){
                 Column (
                     modifier = Modifier
-                        .padding(top = 10.dp, bottom = 8.dp)
-
+                        .padding(10.dp),
+//                    verticalArrangement = Arrangement.Center
                 ){
                     Text(text = result.name,
-                        modifier = Modifier.fillMaxWidth())
-                    Row (
-                        modifier = Modifier.fillMaxWidth().padding(bottom = 10.dp),
-                        verticalAlignment = Alignment.CenterVertically
-                    ){
+                        modifier = Modifier.fillMaxWidth(),
+                        style = TextStyle(
+                            fontSize = 16.sp
+                        )
+                    )
+                    Row (){
                         Icon(
                             imageVector = Icons.Filled.Face,
                             contentDescription = "character's status",
@@ -127,37 +137,40 @@ fun CharacterItem(result: Result){
                         )
                         Text(text = "${result.status} - ",
                             style = TextStyle(
-                                fontSize = 11.sp
+                                fontSize = 14.sp
                             ))
                         Text(text = result.species,
                             style = TextStyle(
-                                fontSize = 11.sp
+                                fontSize = 14.sp
                             ))
                     }
-                    Text(text = "Last Known Location",
+                    Spacer(modifier = Modifier.padding(5.dp).fillMaxWidth())
+                    Text(text = "Last Known Location:",
                         modifier = Modifier.fillMaxWidth(),
                         color = Color.Gray,
                         style = TextStyle(
-                            fontSize = 10.sp
+                            fontSize = 16.sp
                         )
                     )
                     Text(text = result.location.name,
-                        modifier = Modifier.fillMaxWidth().padding(bottom = 10.dp),
+                        modifier = Modifier
+                            .fillMaxWidth(),
+//                            .padding(bottom = 10.dp),
                         style = TextStyle(
-                            fontSize = 13.sp
-                        ))
-
+                            fontSize = 14.sp)
+                    )
+                    Spacer(modifier = Modifier.padding(5.dp).fillMaxWidth())
                     Text(text = "Last seen in:",
                         modifier = Modifier.fillMaxWidth(),
                         color = Color.Gray,
                         style = TextStyle(
-                            fontSize = 10.sp
+                            fontSize = 16.sp
                         )
                     )
                     Text(text = "Pet Shop Employee",
                         modifier = Modifier.fillMaxWidth(),
                         style = TextStyle(
-                            fontSize = 13.sp
+                            fontSize = 14.sp
                         ))
                 }
             }
@@ -169,6 +182,6 @@ fun CharacterItem(result: Result){
 @Composable
 fun _HomeScreenPreview(){
     CartoonAppTheme {
-//        HomeScreen()
+        HomeScreen()
     }
 }
