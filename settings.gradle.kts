@@ -21,3 +21,5 @@ dependencyResolutionManagement {
 
 rootProject.name = "CartoonApp"
 include(":app")
+include(":domain")
+include(":data")

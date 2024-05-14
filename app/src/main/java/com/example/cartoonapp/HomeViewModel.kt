@@ -1,56 +1,30 @@
 package com.example.cartoonapp
 
-import android.util.Log
-import androidx.activity.viewModels
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.cartoonapp.model.CharacterResponse
-import com.example.cartoonapp.model.Location
-import com.example.cartoonapp.model.Origin
-import com.example.cartoonapp.model.Result
+import com.example.domain.usecases.getCharactersUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
-import dagger.hilt.android.scopes.ViewModelScoped
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class HomeViewModel @Inject constructor(
-    private val apiService: ApiService
+    private val getCharactersUseCase: getCharactersUseCase
 ):ViewModel() {
 
-    val results  = mutableStateOf<List<Result>>(listOf(Result(
-        " ",
-        listOf(""),
-        "",
-        1,
-        "",
-        Location("", ""),
-        "",
-        Origin("", ""),
-        "",
-        "", "", ""
-    ), Result(
-        " ",
-        listOf(""),
-        "",
-        1,
-        "",
-        Location("", ""),
-        "",
-        Origin("", ""),
-        "",
-        "", "", ""
-    )))
+    private val state = mutableStateOf<State>(State(true,emptyList(),""))
+    val stateOfHomePage : MutableState<State> get() = state
 
     init {
         viewModelScope.launch(Dispatchers.IO) {
-            val charResponse: CharacterResponse = apiService.getCharacters()
-            Log.d("TAG1000", "response : "+charResponse)
-            results.value= charResponse.results
+            try {
+                state.value = State(false,getCharactersUseCase().results, "")
+            }catch (e:Exception){
+                state.value = State(false,emptyList(), "")
+            }
         }
     }
 

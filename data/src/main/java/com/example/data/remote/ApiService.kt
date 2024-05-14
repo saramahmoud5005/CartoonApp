@@ -1,6 +1,6 @@
-package com.example.cartoonapp
+package com.example.data.remote
 
-import com.example.cartoonapp.model.CharacterResponse
+import com.example.domain.model.CharacterResponse
 import retrofit2.http.GET
 
 interface ApiService {

@@ -1,18 +1,15 @@
 package com.example.cartoonapp.di
 
-import android.icu.util.TimeUnit
 import android.os.Build
 import androidx.annotation.RequiresApi
-import com.example.cartoonapp.ApiService
+import com.example.data.remote.ApiService
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import okhttp3.OkHttpClient
-import okio.Timeout
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
-import java.time.Duration
 import javax.inject.Singleton
 
 @Module
@@ -41,7 +38,7 @@ object NetworkModule {
 
     @Provides
 //    @Singleton
-    fun provideApiService(retrofit: Retrofit):ApiService{
-        return retrofit.create(ApiService::class.java)
+    fun provideApiService(retrofit: Retrofit): com.example.data.remote.ApiService {
+        return retrofit.create(com.example.data.remote.ApiService::class.java)
     }
 }

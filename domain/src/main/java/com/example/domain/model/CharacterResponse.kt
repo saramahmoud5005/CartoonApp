@@ -1,4 +1,4 @@
-package com.example.cartoonapp.model
+package com.example.domain.model
 
 data class CharacterResponse(
     val info: Info,

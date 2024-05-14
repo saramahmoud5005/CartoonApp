@@ -4,7 +4,7 @@ plugins {
 }
 
 android {
-    namespace = "com.example.domain"
+    namespace = "com.example.data"
     compileSdk = 34
 
     defaultConfig {
@@ -40,6 +40,8 @@ dependencies {
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
-//
-//    implementation(project(path = ":app"))
+
+    implementation("com.squareup.retrofit2:retrofit:2.9.0")
+
+    implementation(project(path = ":domain"))
 }
