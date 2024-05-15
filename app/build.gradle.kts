@@ -88,7 +88,7 @@ dependencies {
     implementation("androidx.hilt:hilt-navigation-compose:1.2.0")
 
     implementation(project(path = ":domain"))
-    implementation(project(path = ":app"))
+    implementation(project(path = ":data"))
 }
 kapt {
     correctErrorTypes = true

@@ -1,6 +1,7 @@
-package com.example.cartoonapp
+package com.example.cartoonapp.presentation
 
 import android.annotation.SuppressLint
+import android.util.Log
 import androidx.compose.animation.core.LinearEasing
 import androidx.compose.animation.core.RepeatMode
 import androidx.compose.animation.core.animateFloat
@@ -46,6 +47,7 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import coil.compose.AsyncImage
 import com.example.cartoonapp.ui.theme.CartoonAppTheme
+import com.example.cartoonapp.viewmodels.HomeViewModel
 import com.example.domain.model.Result
 
 @SuppressLint("StateFlowValueCalledInComposition")
@@ -55,20 +57,26 @@ fun HomeScreen(){
 
     val resultState = viewModel.stateOfHomePage.value
 
-    LazyColumn(
-
-    ) {
-
-        items(resultState.result){
-            CharacterItem(it)
-        }
-        if(resultState.isLoading){
-            items(6){
-                AnimatedLoadingGradient()
-            }
-
-        }
+//    LazyColumn(
+//
+//    ) {
+//        Log.d("TAG1000", "HomeScreen: "+resultState.result)
+//
+//        items(resultState.result){
+//            CharacterItem(it)
+//        }
+//        if(resultState.isLoading){
+//            items(6){
+//                AnimatedLoadingGradient()
+//            }
+//        }
+//    }
+    Log.d("TAG1000", "HomeScreen: "+resultState.result)
+    CharacterDetailsScreen(resultState.result)
+    if(resultState.isLoading){
+        AnimatedLoadingGradient()
     }
+
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -97,7 +105,8 @@ fun AnimatedLoadingGradient() {
             )
             Column(
                 modifier = Modifier
-                    .padding(10.dp).weight(0.60f),
+                    .padding(10.dp)
+                    .weight(0.60f),
             ) {
                 Box(
                     modifier = Modifier
@@ -315,6 +324,6 @@ fun CharacterItem(result: Result){
 @Composable
 fun _HomeScreenPreview(){
     CartoonAppTheme {
-        HomeScreen()
+//        HomeScreen()
     }
 }
