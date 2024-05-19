@@ -72,9 +72,11 @@ fun HomeScreen(){
 //        }
 //    }
     Log.d("TAG1000", "HomeScreen: "+resultState.result)
-    CharacterDetailsScreen(resultState.result)
     if(resultState.isLoading){
         AnimatedLoadingGradient()
+    }
+    else{
+        CharacterDetailsScreen(resultState.result)
     }
 
 }

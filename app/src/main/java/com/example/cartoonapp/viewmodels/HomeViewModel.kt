@@ -4,8 +4,8 @@ import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.cartoonapp.State
-import com.example.domain.usecases.getCharactersUseCase
+import com.example.cartoonapp.HomeState
+import com.example.domain.usecases.GetCharactersUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -13,18 +13,18 @@ import javax.inject.Inject
 
 @HiltViewModel
 class HomeViewModel @Inject constructor(
-    private val getCharactersUseCase: getCharactersUseCase
+    private val getCharactersUseCase: GetCharactersUseCase,
 ):ViewModel() {
 
-    private val state = mutableStateOf<State>(State(true,emptyList(),""))
-    val stateOfHomePage : MutableState<State> get() = state
+    private val state = mutableStateOf<HomeState>(HomeState(true,emptyList(),""))
+    val stateOfHomePage : MutableState<HomeState> get() = state
 
     init {
         viewModelScope.launch(Dispatchers.IO) {
             try {
-                state.value = State(false,getCharactersUseCase().results, "")
+                state.value = HomeState(false,getCharactersUseCase().results, "")
             }catch (e:Exception){
-                state.value = State(false,emptyList(), "")
+                state.value = HomeState(false,emptyList(), "")
             }
         }
     }
