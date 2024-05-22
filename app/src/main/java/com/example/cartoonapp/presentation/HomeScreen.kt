@@ -45,191 +45,53 @@ import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavController
 import coil.compose.AsyncImage
+import com.example.cartoonapp.AnimatedLoadingGradient
+import com.example.cartoonapp.Screen
 import com.example.cartoonapp.ui.theme.CartoonAppTheme
 import com.example.cartoonapp.viewmodels.HomeViewModel
 import com.example.domain.model.Result
+import androidx.activity.viewModels
+
 
 @SuppressLint("StateFlowValueCalledInComposition")
 @Composable
-fun HomeScreen(){
-    val viewModel  : HomeViewModel = viewModel()
+fun HomeScreen(navController: NavController, viewModel: HomeViewModel, onClickItem: ()->Unit = {}){
+//    val viewModel  : HomeViewModel by viewModels()
 
     val resultState = viewModel.stateOfHomePage.value
 
-//    LazyColumn(
-//
-//    ) {
-//        Log.d("TAG1000", "HomeScreen: "+resultState.result)
-//
-//        items(resultState.result){
-//            CharacterItem(it)
-//        }
-//        if(resultState.isLoading){
-//            items(6){
-//                AnimatedLoadingGradient()
-//            }
-//        }
-//    }
-    Log.d("TAG1000", "HomeScreen: "+resultState.result)
-    if(resultState.isLoading){
-        AnimatedLoadingGradient()
-    }
-    else{
-        CharacterDetailsScreen(resultState.result)
-    }
+    LazyColumn(
 
-}
+    ) {
+        Log.d("TAG1000", "HomeScreen: "+resultState.result)
 
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
-fun AnimatedLoadingGradient() {
-    val geminiPrimaryColor = Color(0xFFD9D9E9)
-    val geminiContainerColor = Color(0xFF235EC2)
+        items(resultState.result){
+            CharacterItem(it){
+//                CharacterDetailsScreen(resultState.result.get(it.id-1))
 
-    Card(
-        modifier = Modifier
-            .padding(10.dp)
-            .fillMaxSize()
-            .size(160.dp),
-        onClick = {},
-    ){
-        Row()
-        {
-            Box(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .weight(0.40f)
-                    .animatedGradient(
-                        primaryColor = geminiPrimaryColor,
-                        containerColor = geminiContainerColor
-                    )
-            )
-            Column(
-                modifier = Modifier
-                    .padding(10.dp)
-                    .weight(0.60f),
-            ) {
-                Box(
-                    modifier = Modifier
-                        .height(15.dp)
-                        .fillMaxWidth()
-                        .animatedGradient(
-                            primaryColor = geminiPrimaryColor,
-                            containerColor = geminiContainerColor
-                        )
-                )
-                Spacer(modifier = Modifier.padding(3.dp))
-                Row(
-                    horizontalArrangement = Arrangement.Center,
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    Box(
-                        modifier = Modifier
-                            .height(15.dp)
-                            .fillMaxWidth()
-                            .animatedGradient(
-                                primaryColor = geminiPrimaryColor,
-                                containerColor = geminiContainerColor
-                            )
-                    )
-                }
-                Spacer(
-                    modifier = Modifier
-                        .padding(5.dp)
-                        .fillMaxWidth()
-                )
-                Box(
-                    modifier = Modifier
-                        .height(15.dp)
-                        .fillMaxWidth()
-                        .animatedGradient(
-                            primaryColor = geminiPrimaryColor,
-                            containerColor = geminiContainerColor
-                        )
-                )
-                Spacer(modifier = Modifier.padding(3.dp))
-                Box(
-                    modifier = Modifier
-                        .height(15.dp)
-                        .fillMaxWidth()
-                        .animatedGradient(
-                            primaryColor = geminiPrimaryColor,
-                            containerColor = geminiContainerColor
-                        )
-                )
-                Spacer(
-                    modifier = Modifier
-                        .padding(5.dp)
-                        .fillMaxWidth()
-                )
-                Box(
-                    modifier = Modifier
-                        .height(15.dp)
-                        .fillMaxWidth()
-                        .animatedGradient(
-                            primaryColor = geminiPrimaryColor,
-                            containerColor = geminiContainerColor
-                        )
-                )
-                Spacer(modifier = Modifier.padding(3.dp))
-                Box(
-                    modifier = Modifier
-                        .height(15.dp)
-                        .fillMaxWidth()
-                        .animatedGradient(
-                            primaryColor = geminiPrimaryColor,
-                            containerColor = geminiContainerColor
-                        )
-                )
+                navController.navigate(Screen.CharacterDetails.route)
+            }
+        }
+        if(resultState.isLoading){
+            items(6){
+                AnimatedLoadingGradient()
             }
         }
     }
 }
 
-@SuppressLint("ModifierFactoryUnreferencedReceiver")
-fun Modifier.animatedGradient(
-    primaryColor: Color,
-    containerColor: Color,
-): Modifier = composed {
-    var size by remember { mutableStateOf(IntSize.Zero) }
-    val transition = rememberInfiniteTransition(label = "")
-    val colors = listOf(
-        primaryColor,
-        containerColor,
-        primaryColor
-    )
-    val offsetXAnimation by transition.animateFloat(
-        initialValue = -size.width.toFloat(),
-        targetValue = size.width.toFloat(),
-        animationSpec = infiniteRepeatable(
-            animation = tween(durationMillis = 1500, easing = LinearEasing),
-            repeatMode = RepeatMode.Restart
-        ), label = "gradientAnimation"
-    )
-    background(
-        brush = Brush.linearGradient(
-            colors = colors,
-            start = Offset(x = offsetXAnimation, y = 0f),
-            end = Offset(x = offsetXAnimation + size.width.toFloat(), y = size.height.toFloat())
-        ),
-        shape = RoundedCornerShape(24.dp)
-    )
-        .onGloballyPositioned {
-            size = it.size
-        }
-}
-
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun CharacterItem(result: Result){
+fun CharacterItem(result: Result, onClickItem: ()->Unit = {}){
     Card(
         modifier = Modifier
             .padding(10.dp)
             .fillMaxSize()
-            .size(160.dp),
+            .size(150.dp),
 
-        onClick = {}
+        onClick = onClickItem
     ) {
         Row(){
             Box(
@@ -318,7 +180,7 @@ fun CharacterItem(result: Result){
                     )
                 }
             }
-            }
+        }
     }
 }
 
