@@ -36,19 +36,26 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import coil.compose.AsyncImage
 import com.example.cartoonapp.AnimatedLoadingGradient
 import com.example.cartoonapp.CharacterDetailsState
 import com.example.cartoonapp.ui.theme.CartoonAppTheme
 import com.example.cartoonapp.viewmodels.CharacterDetailsViewModel
+import com.example.cartoonapp.viewmodels.HomeViewModel
 import com.example.domain.model.Episode
 import com.example.domain.model.Result
 
 @Composable
 fun CharacterDetailsScreen(result: Result){
 
-    val characterDetailsViewModel : CharacterDetailsViewModel = viewModel()
+    val characterDetailsViewModel : CharacterDetailsViewModel = hiltViewModel()
+
+//    val viewModel  : HomeViewModel = viewModel()
+
+//    val result = viewModel.stateOfHomePage.value.result.get(id)
 
     val episodesState = characterDetailsViewModel.stateOfCharacterDetailsPage.value
     Log.d("TAG1000", "CharacterDetailsScreen: episodes = "+episodesState)
@@ -94,7 +101,7 @@ fun CharacterDetails(result: Result,episodesState: CharacterDetailsState){
                     )
                 )
                 Spacer(modifier = Modifier.height(10.dp))
-                CustomRowForTwoElements(Icons.Filled.LocationOn,result.location.name, Color.Red)
+                CustomRowForTwoElements(Icons.Filled.LocationOn,"result.location.name", Color.Red)
 
                 Spacer(modifier = Modifier.height(10.dp))
                 Row (

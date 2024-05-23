@@ -1,8 +1,10 @@
 plugins {
     alias(libs.plugins.android.application)
     id("org.jetbrains.kotlin.android")
+    id("kotlin-parcelize")
     id("kotlin-kapt")
     id("com.google.dagger.hilt.android")
+//    id("com.google.devtools.ksp")
 }
 
 android {
@@ -42,7 +44,7 @@ android {
         compose = true
     }
     composeOptions {
-        kotlinCompilerExtensionVersion = "1.4.3"
+        kotlinCompilerExtensionVersion = "1.5.7"
     }
     packaging {
         resources {
@@ -71,7 +73,7 @@ dependencies {
     debugImplementation(libs.androidx.ui.test.manifest)
 
 
-    implementation ("androidx.graphics:graphics-shapes:1.0.0-alpha05")
+    implementation("androidx.graphics:graphics-shapes:1.0.0-alpha05")
 
     implementation("io.coil-kt:coil-compose:2.0.0-rc01")
 

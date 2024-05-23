@@ -18,7 +18,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class CharacterDetailsViewModel @Inject constructor(
-    val getEpisodesUseCase: GetEpisodesUseCase
+    val getEpisodesUseCase: GetEpisodesUseCase,
 ):ViewModel() {
 
     private val state = mutableStateOf<CharacterDetailsState>(CharacterDetailsState(true,emptyList(),""))

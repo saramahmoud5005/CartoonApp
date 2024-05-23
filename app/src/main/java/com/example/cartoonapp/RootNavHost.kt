@@ -2,6 +2,9 @@ package com.example.cartoonapp
 
 import android.os.Bundle
 import androidx.compose.runtime.Composable
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavArgument
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -9,31 +12,42 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.example.cartoonapp.presentation.CharacterDetailsScreen
 import com.example.cartoonapp.presentation.HomeScreen
+import com.example.cartoonapp.viewmodels.CharacterDetailsViewModel
 import com.example.cartoonapp.viewmodels.HomeViewModel
 import com.example.domain.model.Result
 
 @Composable
-fun RootNavHost(viewModel: HomeViewModel){
+fun RootNavHost() {
     var navController = rememberNavController()
+
+    val viewModel: HomeViewModel = hiltViewModel()
+
     NavHost(
         navController = navController,
         startDestination = Screen.Home.route
-    ){
-        composable(Screen.Home.route){
-            HomeScreen(navController, viewModel){
-//                navController.currentBackStackEntry?.arguments =
-//                    Bundle().apply {
-//                        putParcelable("result", Result)
-//                    }
+    ) {
+        composable(Screen.Home.route) {
+            HomeScreen(viewModel.stateOfHomePage.value, navController) {index->
+                navController.navigate(Screen.CharacterDetails.route + "/$index")
+
             }
         }
-        composable(Screen.CharacterDetails.route,
-            arguments = listOf(navArgument("result") { type = NavType.ParcelableType(Result::class.java)})){
-//            var resultModel = navController.previousBackStackEntry?.arguments?.getParcelable<Result>("result")
-//            val result = navController.currentBackStackEntry?.arguments?.putParcelable("result",Result)
-//            navController.navigate(Screen.CharacterDetails.route)
-            var resultModel = it.arguments?.getParcelable<Result>("result")
-            CharacterDetailsScreen(resultModel!!)
+        composable(
+            Screen.CharacterDetails.route + "/{id}",
+            arguments = listOf(
+                navArgument("id") {
+                    type = NavType.IntType
+                },
+            ),
+        ) {
+
+            CharacterDetailsScreen(
+                viewModel.stateOfHomePage.value.result.get(
+                    it.arguments!!.getInt(
+                        "id"
+                    )
+                )
+            )
         }
     }
 }
