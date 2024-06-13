@@ -3,6 +3,7 @@ package com.example.cartoonapp.di
 import android.os.Build
 import androidx.annotation.RequiresApi
 import com.example.data.remote.ApiService
+import com.example.data.remote.Constants
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -30,7 +31,7 @@ object NetworkModule {
     @Singleton
     fun provideRetrofit(okHttpClient: OkHttpClient):Retrofit{
         return Retrofit.Builder()
-            .baseUrl("https://rickandmortyapi.com/api/")
+            .baseUrl(Constants.BASE_URL)
             .client(okHttpClient)
             .addConverterFactory(GsonConverterFactory.create())
             .build()
