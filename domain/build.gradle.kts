@@ -43,4 +43,6 @@ dependencies {
     androidTestImplementation(libs.androidx.espresso.core)
 
     implementation ("com.squareup.retrofit2:converter-gson:2.4.0")
+    implementation(libs.androidx.activity.compose)
+    implementation(libs.androidx.ui.graphics)
 }
