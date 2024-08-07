@@ -21,7 +21,7 @@ fun RootNavHost(activity: Activity) {
 
     NavHost(
         navController = navController,
-        startDestination = Screen.Home.route
+        startDestination = Screen.Characters.route
     ) {
         composable(Screen.Home.route) {
             HomeScreen(navController)
